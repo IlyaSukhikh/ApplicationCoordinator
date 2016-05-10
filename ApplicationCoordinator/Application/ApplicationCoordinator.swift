@@ -11,6 +11,7 @@ import UIKit
 class ApplicationCoordinator: BaseCoordinator {
     
     var tabbar: UITabBarController
+    let coordinatorFactory: CoordinatorFactory
     
     lazy var presenter: TabbarPresenter = {
         return TabbarPresenter(rootController: self.tabbar) { [weak self] result in
@@ -23,8 +24,11 @@ class ApplicationCoordinator: BaseCoordinator {
         }
     }()
 
-    init(presenter: UITabBarController) {
+    init(presenter: UITabBarController,
+         coordinatorFactory: CoordinatorFactory) {
+        
         self.tabbar = presenter
+        self.coordinatorFactory = coordinatorFactory
     }
     
     override func start() {

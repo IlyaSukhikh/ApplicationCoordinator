@@ -11,16 +11,18 @@ enum ItemListActions {
     case ItemSelect(ItemList), Create
 }
 
-class ItemCoordinator: BaseCoordinator {
+final class ItemCoordinator: BaseCoordinator {
 
-    var factory: ItemControllersFactory
-    var coordinatorFactory: CoordinatorFactory
+    let factory: ItemControllersFactory
+    let coordinatorFactory: CoordinatorFactory
     var presenter: NavigationPresenter?
     
-    init(presenter: NavigationPresenter) {
+    init(presenter: NavigationPresenter,
+         factory: ItemControllersFactory,
+         coordinatorFactory: CoordinatorFactory) {
         
-        factory = ItemControllersFactory()
-        coordinatorFactory = CoordinatorFactory()
+        self.factory = factory
+        self.coordinatorFactory = coordinatorFactory
         self.presenter = presenter
     }
     
@@ -57,8 +59,7 @@ class ItemCoordinator: BaseCoordinator {
     
     func showItemDetail(item: ItemList) {
         
-        let itemDetailController = factory.createItemDetailController()
-        itemDetailController.item = item
+        let itemDetailController = factory.createItemDetailController(item: item)
         itemDetailController.completionHandler = { result in
             /* continue the flow */
         }

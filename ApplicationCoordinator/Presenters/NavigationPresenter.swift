@@ -22,8 +22,20 @@ class NavigationPresenter: Presenter {
         present(controller, animated: animated)
     }
     
-    func present(controller: UIViewController, animated: Bool = true) {
+    func present(flowController: FlowController, animated: Bool = true) {
+        if let controller = flowController as? UIViewController {
+            present(controller, animated: animated)
+        }
+    }
+    
+    private func present(controller: UIViewController, animated: Bool = true) {
         rootController?.presentViewController(controller, animated: animated, completion: nil)
+    }
+    
+    func push(flowController: FlowController, animated: Bool = true) {
+        if let controller = flowController as? UIViewController {
+            push(controller, animated: animated)
+        }
     }
     
     func push<T: Presenter>(presenter: T, animated: Bool = true)  {
@@ -31,7 +43,7 @@ class NavigationPresenter: Presenter {
         push(controller, animated: animated)
     }
     
-    func push(controller: UIViewController, animated: Bool = true)  {
+    private func push(controller: UIViewController, animated: Bool = true)  {
         rootController?.pushViewController(controller, animated: animated)
     }
     
