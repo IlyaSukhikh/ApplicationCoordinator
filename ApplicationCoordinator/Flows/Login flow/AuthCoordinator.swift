@@ -46,7 +46,7 @@ class AuthCoordinator: BaseCoordinator {
                 self?.flowCompletionHandler?()
             }
         }
-        presenter?.push(loginController, animated: false)
+        //presenter?.push(loginController, animated: false)
     }
     
     func showSignUp() {
@@ -59,6 +59,6 @@ class AuthCoordinator: BaseCoordinator {
                 self?.flowCompletionHandler?()
             }
         }
-        presenter?.push(signUpController)
+        //presenter?.push(signUpController)
     }
 }

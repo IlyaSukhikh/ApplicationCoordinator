@@ -17,9 +17,13 @@ class NavigationPresenter: Presenter {
         self.rootController = rootController
     }
     
-    func present<T: Presenter>(presenter: T, animated: Bool = true) {
+    /*func present<T: Presenter>(presenter: T, animated: Bool = true) {
         guard let controller = presenter.rootController else { return }
         present(controller, animated: animated)
+    }*/
+    
+    func present(coordinator: Coordinator, animated: Bool = true) {
+        guard let controller = coordinator.
     }
     
     func present(flowController: FlowController, animated: Bool = true) {

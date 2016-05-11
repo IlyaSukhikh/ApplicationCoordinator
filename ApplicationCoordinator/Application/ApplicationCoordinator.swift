@@ -38,8 +38,8 @@ class ApplicationCoordinator: BaseCoordinator {
     func runItemCoordinator() {
         
         if let navController = presenter.itemTabController() where navController.viewControllers.isEmpty {
-            let itemCoordinator = ItemCoordinator(presenter: NavigationPresenter(rootController: navController))
-            itemCoordinator.start()
+            let itemCoordinator = coordinatorFactory.createItemCoordinatorTuple(navController)
+            itemCoordinator.coordinator.start()
             addDependancy(itemCoordinator)
         }
     }

@@ -41,6 +41,6 @@ class ItemCreateCoordinator: BaseCoordinator {
                 self?.presenter?.dismissController()
             }
         }
-        presenter?.push(createController, animated: false)
+        //presenter?.push(createController, animated: false)
     }
 }

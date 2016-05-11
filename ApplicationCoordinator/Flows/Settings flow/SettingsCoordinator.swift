@@ -34,6 +34,6 @@ class SettingsCoordinator: BaseCoordinator {
         settingsController.completionHandler = { result in
             /* continue the flow */
         }
-        presenter?.push(settingsController, animated: false)
+        //presenter?.push(settingsController, animated: false)
     }
 }
