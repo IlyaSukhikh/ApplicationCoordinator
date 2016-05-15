@@ -10,6 +10,6 @@ import Foundation
 
 protocol FlowController: NSObjectProtocol {
     
-    //associatedtype T //enum Actions type
-    var completionHandler: (ItemListActions -> ())? {get set}
+    associatedtype T //enum Actions type
+    var completionHandler: (T -> ())? {get set}
 }

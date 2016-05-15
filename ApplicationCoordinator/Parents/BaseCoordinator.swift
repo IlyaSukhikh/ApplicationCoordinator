@@ -10,6 +10,9 @@ import UIKit
 
 class BaseCoordinator: Coordinator {
     
+    typealias T = NavigationPresenter
+    
+    var presenter: T?
     var flowCompletionHandler:CoordinatorHandler?
     var childCoordinators: [Coordinator] = []
 

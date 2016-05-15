@@ -23,10 +23,10 @@ class NavigationPresenter: Presenter {
     }*/
     
     func present(coordinator: Coordinator, animated: Bool = true) {
-        guard let controller = coordinator.
+        //guard let controller = coordinator.
     }
     
-    func present(flowController: FlowController, animated: Bool = true) {
+    func present<T: FlowController>(flowController: T, animated: Bool = true) {
         if let controller = flowController as? UIViewController {
             present(controller, animated: animated)
         }

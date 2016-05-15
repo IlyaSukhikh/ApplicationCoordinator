@@ -12,9 +12,9 @@ class ItemControllersFactory {
         return ItemsListController.controllerFromStoryboard(.Items)
     }
     
-    func createItemDetailController(item item: ItemList) -> FlowController {
+    func createItemDetailController<T: FlowController>(item item: ItemList) -> T {
         let itemDetailController = ItemDetailController.controllerFromStoryboard(.Items)
         itemDetailController.item = item
-        return itemDetailController
+        return itemDetailController as! T
     }
 }

@@ -12,3 +12,20 @@ protocol Presenter: class {
     associatedtype ViewController: UIViewController
     weak var rootController: ViewController? {get set} // UINavigationController, UITabbarController, UIPageViewController etc
 }
+/*
+enum PresenterHandlerBox: Presenter {
+    
+    init() {
+        
+    }
+    
+    func lol() {
+        
+        switch self {
+        case .sdf:
+            return NavigationPresenter(rootController: <#T##ViewController#>)
+        default:
+ 
+        }
+    }
+}*/

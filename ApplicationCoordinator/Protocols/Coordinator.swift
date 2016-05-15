@@ -12,7 +12,9 @@ typealias CoordinatorHandler = () -> ()
 
 protocol Coordinator: class {
     
+    //func presenger<T: Presenter>() -> T?
     var presenter: Presenter?
+    
     var flowCompletionHandler: CoordinatorHandler? {get set}
     func start()
 }
