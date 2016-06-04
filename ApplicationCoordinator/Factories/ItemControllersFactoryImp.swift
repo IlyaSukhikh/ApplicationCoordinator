@@ -12,7 +12,7 @@ final class ItemControllersFactoryImp: ItemControllersFactory {
     
     func createItemsBox() ->
         (controllerForPresent: UIViewController,
-        output: ItemsFlowOutput) {
+        output: ItemsListOutput) {
             
             let controller = ItemsListController.controllerFromStoryboard(.Items)
             return (controller, controller)
