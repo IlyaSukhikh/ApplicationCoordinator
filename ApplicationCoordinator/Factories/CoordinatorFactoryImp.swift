@@ -15,7 +15,7 @@ final class CoordinatorFactoryImp: CoordinatorFactory {
     
     func createItemCoordinator(navController navController: UINavigationController?) -> Coordinator {
         let coordinator = ItemCoordinator(router: router(navController),
-                                          factory: ItemControllersFactoryImp(),
+                                          factory: ControllersFactoryImp(),
                                           coordinatorFactory: CoordinatorFactoryImp())
         return coordinator
     }
@@ -26,44 +26,40 @@ final class CoordinatorFactoryImp: CoordinatorFactory {
     
     func createSettingsCoordinator(navController navController: UINavigationController? = nil) -> Coordinator {
         let coordinator = SettingsCoordinator(router: router(navController),
-                                              factory: SettingsControllersFactoryImp())
+                                              factory: ControllersFactoryImp())
         return coordinator
     }
     
     func createItemCreationCoordinatorBox() ->
-        (coordinator: Coordinator,
-         output: ItemCreateCoordinatorOutput,
-        controllerForPresent: UIViewController?) {
+        (configurator: protocol<Coordinator, ItemCreateCoordinatorOutput>,
+        toPresent: UIViewController?) {
             
             return createItemCreationCoordinatorBox(navController: nil)
     }
-    func createItemCreationCoordinatorBox(navController navController: UINavigationController? = nil) ->
-        (coordinator: Coordinator,
-        output: ItemCreateCoordinatorOutput,
-        controllerForPresent: UIViewController?) {
+    func createItemCreationCoordinatorBox(navController navController: UINavigationController?) ->
+        (configurator: protocol<Coordinator, ItemCreateCoordinatorOutput>,
+        toPresent: UIViewController?) {
             
             let router = self.router(navController)
             let coordinator = ItemCreateCoordinator(router: router,
-                                                    factory: ItemCreateControllersFactoryImp())
-            return (coordinator, coordinator, router.rootController)
+                                                    factory: ControllersFactoryImp())
+            return (coordinator, router.rootController)
     }
     
     func createAuthCoordinatorBox() ->
-        (coordinator: Coordinator,
-        output: AuthCoordinatorOutput,
-        controllerForPresent: UIViewController?) {
-            
+        (configurator: protocol<Coordinator, AuthCoordinatorOutput>,
+        toPresent: UIViewController?) {
             return createAuthCoordinatorBox(navController: nil)
     }
     
-    func createAuthCoordinatorBox(navController navController: UINavigationController? = nil) ->
-        (coordinator: Coordinator,
-        output: AuthCoordinatorOutput,
-        controllerForPresent: UIViewController?) {
+    func createAuthCoordinatorBox(navController navController: UINavigationController?) ->
+        (configurator: protocol<Coordinator, AuthCoordinatorOutput>,
+        toPresent: UIViewController?) {
+            
             let router = self.router(navController)
             let coordinator = AuthCoordinator(router: router,
-                                              factory: AuthControllersFactoryImp())
-            return (coordinator, coordinator, router.rootController)
+                                              factory: ControllersFactoryImp())
+            return (coordinator, router.rootController)
     }
     
     private func router(navController: UINavigationController?) -> Router {
@@ -71,10 +67,8 @@ final class CoordinatorFactoryImp: CoordinatorFactory {
     }
     
     private func navigationController(navController: UINavigationController?) -> UINavigationController {
-        if let navController = navController {
-            return navController
-        } else {
-            return UINavigationController.controllerFromStoryboard(.Main)
-        }
+        
+        if let navController = navController { return navController }
+        else { return UINavigationController.controllerFromStoryboard(.Main) }
     }
 }

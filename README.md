@@ -1,7 +1,9 @@
 # ApplicationCoordinator
+A lot of developers need to change navigation flow frequently, because it depends on business tasks. And they spend a huge amount of time for re-writing code. In this approach, I demonstrate our implementation of Coordinators, the creation of a protocol-oriented, testable architecture written on pure Swift without the downcast and, also to avoid the violation of the S.O.L.I.D. principles.
+
 Based on the post about Application Coordinators [khanlou.com](http://khanlou.com/2015/10/coordinators-redux/) and Application Controller pattern description [martinfowler.com](http://martinfowler.com/eaaCatalog/applicationController.html).
 
-My presentation and problem’s explanation: [speakerdeck.com](https://speakerdeck.com/andreypanov/introducing-application-coordinator)
+My presentation and problem’s explanation: [speakerdeck.com](https://speakerdeck.com/andreypanov/introducing-application-coordinators)
 
 Example provides very basic structure with 6 controllers and 5 coordinators with mock data and logic.
 ![](/str.jpg)
@@ -26,28 +28,32 @@ protocol CoordinatorFactory {
     func createItemCoordinator(navController navController: UINavigationController?) -> Coordinator
     func createItemCoordinator() -> Coordinator
     
-    func createItemCreationCoordinatorBox() ->
-        (coordinator: Coordinator,
-        output: ItemCreateCoordinatorOutput,
-        controllerForPresent: UIViewController?)
+    func createItemCreationCoordinatorBox(navController navController: UINavigationController?) ->
+        (configurator: protocol<Coordinator, ItemCreateCoordinatorOutput>,
+        toPresent: UIViewController?)
 }
 ```
-The base coordinator stores dependancies of child coordinators
+The base coordinator stores dependencies of child coordinators
 ```swift
 class BaseCoordinator {
     
     var childCoordinators: [Coordinatable] = []
     
-    func addDependancy(coordinator: Coordinatable) {
+    func addDependency(coordinator: Coordinator) {
+        
+        for element in childCoordinators {
+            if element === coordinator { return }
+        }
         childCoordinators.append(coordinator)
     }
     
-    func removeDependancy(coordinator: Coordinatable) {
-        guard childCoordinators.isEmpty == false else { return }
+    func removeDependency(coordinator: Coordinator?) {
+        guard childCoordinators.isEmpty == false, let coordinator = coordinator else { return }
         
         for (index, element) in childCoordinators.enumerate() {
-            if ObjectIdentifier(element) == ObjectIdentifier(coordinator) {
+            if element === coordinator {
                 childCoordinators.removeAtIndex(index)
+                break
             }
         }
     }

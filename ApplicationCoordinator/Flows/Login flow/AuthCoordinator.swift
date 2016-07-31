@@ -12,6 +12,8 @@ final class AuthCoordinator: BaseCoordinator, AuthCoordinatorOutput {
     var router: Router
     var finishFlow: (()->())?
     
+    private weak var signUpInput: SignUpFlowInput?
+    
     init(router: Router,
          factory: AuthControllersFactory) {
         
@@ -27,32 +29,35 @@ final class AuthCoordinator: BaseCoordinator, AuthCoordinatorOutput {
     
     private func showLogin() {
         
-        let loginBox = factory.createLoginBox()
-        loginBox.output.onCompleteAuth = { [weak self] in
+        let loginOutput = factory.createLoginOutput()
+        loginOutput.onCompleteAuth = { [weak self] in
             self?.finishFlow?()
         }
-        loginBox.output.onSignUpButtonTap = { [weak self] in
+        loginOutput.onSignUpButtonTap = { [weak self] in
             self?.showSignUp()
         }
-        router.push(loginBox.controllerForPresent, animated: false)
+        router.push(loginOutput.toPresent(), animated: false)
     }
     
     private func showSignUp() {
         
-        let signUpBox = factory.createSignUpBox()
-        signUpBox.output.onSignUpComplete = { [weak self] in
+        let signUp = factory.createSignUpHandler()
+        signUpInput = signUp
+        signUp.onSignUpComplete = { [weak self] in
             self?.finishFlow?()
         }
-        signUpBox.output.onTermsButtonTap = { [weak self] completionHandler in
-            self?.showTerms(completionHandler)
+        signUp.onTermsButtonTap = { [weak self] in
+            self?.showTerms()
         }
-        router.push(signUpBox.controllerForPresent)
+        router.push(signUp.toPresent())
     }
     
-    private func showTerms(completionHandler: ((Bool) -> ())) {
+    private func showTerms() {
         
-        let termsBox = factory.createTermsBox()
-        termsBox.output.onPopController = completionHandler
-        router.push(termsBox.controller)
+        let termsOutput = factory.createTermsOutput()
+        termsOutput.onPopController = { [weak self] agree in
+            self?.signUpInput?.conformTermsAgreement(agree)
+        }
+        router.push(termsOutput.toPresent())
     }
 }

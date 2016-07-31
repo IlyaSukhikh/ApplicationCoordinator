@@ -30,51 +30,51 @@ final class ItemCoordinator: BaseCoordinator {
     
     private func showItemList() {
       
-        let itemFlowBox = factory.createItemsBox()
-        itemFlowBox.output.authNeed = { [weak self] in
+        let itemsOutput = factory.createItemsOutput()
+        itemsOutput.authNeed = { [weak self] in
             self?.runAuthCoordinator()
         }
-        itemFlowBox.output.onItemSelect = { [weak self] (item) in
+        itemsOutput.onItemSelect = { [weak self] (item) in
             self?.showItemDetail(item)
         }
-        itemFlowBox.output.onCreateButtonTap = { [weak self] in
+        itemsOutput.onCreateButtonTap = { [weak self] in
             self?.runCreationCoordinator()
         }
-        router.push(itemFlowBox.controllerForPresent, animated: false)
+        router.push(itemsOutput.toPresent(), animated: false)
     }
     
     private func showItemDetail(item: ItemList) {
         
-        let itemDetailFlowBox = factory.createItemDetailBox(item: item)
-        router.push(itemDetailFlowBox.controllerForPresent)
+        let itemDetailFlowOutput = factory.createItemDetailOutput(item: item)
+        router.push(itemDetailFlowOutput.toPresent())
     }
     
 //MARK: - Run coordinators (switch to another flow)
     
     private func runAuthCoordinator() {
-        var authFlowBox = coordinatorFactory.createAuthCoordinatorBox()
-        authFlowBox.output.finishFlow = { [weak self] in
+        let (coordinator, controller) = coordinatorFactory.createAuthCoordinatorBox()
+        coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.router.dismissController()
-            self?.removeDependancy(authFlowBox.coordinator)
+            self?.removeDependency(coordinator)
         }
-        addDependancy(authFlowBox.coordinator)
-        router.present(authFlowBox.controllerForPresent, animated: false)
-        authFlowBox.coordinator.start()
+        addDependency(coordinator)
+        router.present(controller, animated: false)
+        coordinator.start()
     }
     
     private func runCreationCoordinator() {
         
-        var creationBox = coordinatorFactory.createItemCreationCoordinatorBox()
-        creationBox.output.finishFlow = { [weak self] item in
+        let (coordinator, controller) = coordinatorFactory.createItemCreationCoordinatorBox()
+        coordinator.finishFlow = { [weak self, weak coordinator] item in
             
             self?.router.dismissController()
-            self?.removeDependancy(creationBox.coordinator)
+            self?.removeDependency(coordinator)
             if let item = item {
                 self?.showItemDetail(item)
             }
         }
-        addDependancy(creationBox.coordinator)
-        router.present(creationBox.controllerForPresent)
-        creationBox.coordinator.start()
+        addDependency(coordinator)
+        router.present(controller)
+        coordinator.start()
     }
 }

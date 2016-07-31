@@ -17,19 +17,22 @@ class BaseCoordinator: Coordinator {
     }
     
     // add only unique object
-    func addDependancy(coordinator: Coordinator) {
+    func addDependency(coordinator: Coordinator) {
         
         for element in childCoordinators {
-            if ObjectIdentifier(element) == ObjectIdentifier(coordinator) { return }
+            if element === coordinator { return }
         }
         childCoordinators.append(coordinator)
     }
     
-    func removeDependancy(coordinator: Coordinator) {
-        guard childCoordinators.isEmpty == false else { return }
+    func removeDependency(coordinator: Coordinator?) {
+        guard
+            childCoordinators.isEmpty == false,
+            let coordinator = coordinator
+            else { return }
         
         for (index, element) in childCoordinators.enumerate() {
-            if ObjectIdentifier(element) == ObjectIdentifier(coordinator) {
+            if element === coordinator {
                 childCoordinators.removeAtIndex(index)
                 break
             }
